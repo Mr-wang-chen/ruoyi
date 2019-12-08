@@ -1,3 +1,6 @@
+jasypt:
+    encryptor:
+        password: lyh
 # 数据源配置
 spring:
     datasource:
@@ -6,9 +9,10 @@ spring:
         druid:
             # 主库数据源
             master:
-                url: jdbc:mysql://localhost:3306/ry?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+                url: jdbc:mysql://localhost:3306/ruoyi?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
                 username: root
-                password: password
+                #password: ENC(HV5AoIf1lg2XqbJ4ilezfQ==)
+                password: ENC(j4U18dyHRZP/2ArBiYWSNmkrJnkN2Igr)
             # 从库数据源
             slave:
                 # 从数据源开关/默认关闭
@@ -55,3 +59,20 @@ spring:
                 wall:
                     config:
                         multi-statement-allow: true
+    redis:
+        database: 0
+        host: 127.0.0.1
+        port: 6379
+        password:
+        jedis:
+            pool:
+                max-active: 200
+                max-wait: -1
+                max-idle: 10
+                min-idle: 0
+        timeout: 1000
+
+
+
+
+

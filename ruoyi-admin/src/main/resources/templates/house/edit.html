@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改【请填写功能名称】')" />
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-msg-edit" th:object="${houseMsg}">
+        <input name="id" th:field="*{id}" type="hidden">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">房子名称：</label>
+            <div class="col-sm-8">
+                <input name="houseName" th:field="*{houseName}" class="form-control" type="text" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">房子图片：</label>
+            <div class="col-sm-8">
+                <img name="houseImg" th:src="*{houseImg}" class="img-circle">
+                <!--<input name="houseImg" th:field="*{houseImg}" class="form-control" type="text">-->
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">房子类型</label>
+            <div class="col-sm-8">
+                <input name="houseAddress" th:field="*{houseType}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">所属地址</label>
+            <div class="col-sm-8">
+                <input name="houseAddress" th:field="*{houseAddress}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">房间数：</label>
+            <div class="col-sm-8">
+                <input name="houseRoomcount" th:field="*{houseRoomcount}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">房子大小</label>
+            <div class="col-sm-8">
+                <input name="houseSize" th:field="*{houseSize}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">房子状态：</label>
+            <div class="col-sm-8">
+                <input name="houseState" th:field="*{houseState}" class="form-control" type="text">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">联系人：</label>
+            <div class="col-sm-8">
+                <input name="houseContacts" th:field="*{houseContacts}" class="form-control" type="text">
+            </div>
+        </div>
+    </form>
+</div>
+<th:block th:include="include :: footer" />
+<script type="text/javascript">
+    var prefix = ctx + "system/msg";
+    $("#form-msg-edit").validate({
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/edit", $('#form-msg-edit').serialize());
+        }
+    }
+</script>
+</body>
+</html>

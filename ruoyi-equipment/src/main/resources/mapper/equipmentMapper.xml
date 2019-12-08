@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ruoyi.mapper.equipmentMapper">
+    <resultMap id="equipmentResult" type="equipment">
+        <id property="id" column="id" jdbcType="INTEGER" />
+        <result property="t_cityName" column="t_cityName" jdbcType="VARCHAR" />
+        <result property="t_ipAddress" column="t_ipAddress" jdbcType="VARCHAR"/>
+        <result property="t_types" column="t_types" jdbcType="VARCHAR"/>
+        <result property="t_verdor" column="t_verdor" jdbcType="VARCHAR" />
+        <result property="t_time" column="t_time" jdbcType="VARCHAR"/>
+        <result property="t_urlAddress" column="t_urlAddress" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="findEquipment" parameterType="equipment" resultMap="equipmentResult">
+      select  id, t_cityName,t_ipAddress,t_types,t_verdor,t_time,t_urlAddress
+        from f_equipment
+      where 1 = 1
+        <if test="t_urlAddress != null and t_urlAddress != 0">and t_urlAddress = #{t_urlAddress}</if>
+
+    </select>
+</mapper>
+

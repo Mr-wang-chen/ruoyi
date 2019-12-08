@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.HouseMsgMapper">
+    <resultMap type="HouseMsg" id="HouseMsgResult">
+        <result property="id"    column="id"    />
+        <result property="houseName"    column="house_name"    />
+        <result property="houseImg"    column="house_img"    />
+        <result property="houseType"    column="house_type"    />
+        <result property="houseAddress"    column="house_address"    />
+        <result property="houseRoomcount"    column="house_roomcount"    />
+        <result property="houseSize"    column="house_size"    />
+        <result property="houseState"    column="house_state"    />
+        <result property="houseContacts"    column="house_contacts"    />
+    </resultMap>
+
+    <sql id="selectHouseMsgVo">
+        select id, house_name, house_img, house_type, house_address, house_roomcount, house_size, house_state, house_contacts from house_msg
+    </sql>
+
+    <select id="selectHouseMsgList" parameterType="HouseMsg" resultMap="HouseMsgResult">
+        <include refid="selectHouseMsgVo"/>
+        <where>  
+            <if test="houseName != null  and houseName != ''"> and house_name like concat('%', #{houseName}, '%')</if>
+            <if test="houseImg != null  and houseImg != ''"> and house_img = #{houseImg}</if>
+            <if test="houseType != null  and houseType != ''"> and house_type = #{houseType}</if>
+            <if test="houseAddress != null  and houseAddress != ''"> and house_address = #{houseAddress}</if>
+            <if test="houseRoomcount != null  and houseRoomcount != ''"> and house_roomcount = #{houseRoomcount}</if>
+            <if test="houseSize != null  and houseSize != ''"> and house_size = #{houseSize}</if>
+            <if test="houseState != null  and houseState != ''"> and house_state = #{houseState}</if>
+            <if test="houseContacts != null  and houseContacts != ''"> and house_contacts = #{houseContacts}</if>
+        </where>
+    </select>
+    
+    <select id="selectHouseMsgById" parameterType="Long" resultMap="HouseMsgResult">
+        <include refid="selectHouseMsgVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertHouseMsg" parameterType="HouseMsg" useGeneratedKeys="true" keyProperty="id">
+        insert into house_msg
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="houseName != null  and houseName != ''">house_name,</if>
+            <if test="houseImg != null  and houseImg != ''">house_img,</if>
+            <if test="houseType != null  and houseType != ''">house_type,</if>
+            <if test="houseAddress != null  and houseAddress != ''">house_address,</if>
+            <if test="houseRoomcount != null  and houseRoomcount != ''">house_roomcount,</if>
+            <if test="houseSize != null  and houseSize != ''">house_size,</if>
+            <if test="houseState != null  and houseState != ''">house_state,</if>
+            <if test="houseContacts != null  and houseContacts != ''">house_contacts,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="houseName != null  and houseName != ''">#{houseName},</if>
+            <if test="houseImg != null  and houseImg != ''">#{houseImg},</if>
+            <if test="houseType != null  and houseType != ''">#{houseType},</if>
+            <if test="houseAddress != null  and houseAddress != ''">#{houseAddress},</if>
+            <if test="houseRoomcount != null  and houseRoomcount != ''">#{houseRoomcount},</if>
+            <if test="houseSize != null  and houseSize != ''">#{houseSize},</if>
+            <if test="houseState != null  and houseState != ''">#{houseState},</if>
+            <if test="houseContacts != null  and houseContacts != ''">#{houseContacts},</if>
+         </trim>
+    </insert>
+
+    <update id="updateHouseMsg" parameterType="HouseMsg">
+        update house_msg
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="houseName != null  and houseName != ''">house_name = #{houseName},</if>
+            <if test="houseImg != null  and houseImg != ''">house_img = #{houseImg},</if>
+            <if test="houseType != null  and houseType != ''">house_type = #{houseType},</if>
+            <if test="houseAddress != null  and houseAddress != ''">house_address = #{houseAddress},</if>
+            <if test="houseRoomcount != null  and houseRoomcount != ''">house_roomcount = #{houseRoomcount},</if>
+            <if test="houseSize != null  and houseSize != ''">house_size = #{houseSize},</if>
+            <if test="houseState != null  and houseState != ''">house_state = #{houseState},</if>
+            <if test="houseContacts != null  and houseContacts != ''">house_contacts = #{houseContacts},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteHouseMsgById" parameterType="Long">
+        delete from house_msg where id = #{id}
+    </delete>
+
+    <delete id="deleteHouseMsgByIds" parameterType="String">
+        delete from house_msg where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

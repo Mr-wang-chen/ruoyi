@@ -4,10 +4,7 @@ import java.lang.reflect.Method;
 import java.util.Map;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
-import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.AfterThrowing;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +31,19 @@ public class LogAspect
 {
     private static final Logger log = LoggerFactory.getLogger(LogAspect.class);
 
-    // 配置织入点
+    /*@Pointcut("execution(* select*(..))")
+    public void webLog(){
+        //System.out.println("切入方法打印日志");
+    }
+    @Before("webLog()")
+    public  void doBefore(JoinPoint joinPoint) throws Throwable{
+        System.out.println( "进入=======================================doBefore切面");
+    }
+    @AfterReturning(returning = "ret", pointcut = "webLog()")
+    public void doAfterReturning(Object ret) throws Throwable {
+        // 处理完请求，返回内容
+        log.info("=================================RESPONSE : " + ret);
+    }*/
     @Pointcut("@annotation(com.ruoyi.common.annotation.Log)")
     public void logPointCut()
     {
@@ -42,7 +51,6 @@ public class LogAspect
 
     /**
      * 处理完请求后执行
-     *
      * @param joinPoint 切点
      */
     @AfterReturning(pointcut = "logPointCut()", returning = "jsonResult")
@@ -50,10 +58,8 @@ public class LogAspect
     {
         handleLog(joinPoint, null, jsonResult);
     }
-
     /**
      * 拦截异常操作
-     * 
      * @param joinPoint 切点
      * @param e 异常
      */
@@ -62,7 +68,6 @@ public class LogAspect
     {
         handleLog(joinPoint, e, null);
     }
-
     protected void handleLog(final JoinPoint joinPoint, final Exception e, Object jsonResult)
     {
         try
@@ -73,10 +78,8 @@ public class LogAspect
             {
                 return;
             }
-
             // 获取当前的用户
             SysUser currentUser = ShiroUtils.getSysUser();
-
             // *========数据库日志=========*//
             SysOperLog operLog = new SysOperLog();
             operLog.setStatus(BusinessStatus.SUCCESS.ordinal());
@@ -85,7 +88,6 @@ public class LogAspect
             operLog.setOperIp(ip);
             // 返回参数
             operLog.setJsonResult(JSON.marshal(jsonResult));
-
             operLog.setOperUrl(ServletUtils.getRequest().getRequestURI());
             if (currentUser != null)
             {
@@ -96,7 +98,6 @@ public class LogAspect
                     operLog.setDeptName(currentUser.getDept().getDeptName());
                 }
             }
-
             if (e != null)
             {
                 operLog.setStatus(BusinessStatus.FAIL.ordinal());
@@ -121,10 +122,9 @@ public class LogAspect
             exp.printStackTrace();
         }
     }
-
     /**
      * 获取注解中对方法的描述信息 用于Controller层注解
-     * 
+     *
      * @param log 日志
      * @param operLog 操作日志
      * @throws Exception
@@ -147,7 +147,7 @@ public class LogAspect
 
     /**
      * 获取请求的参数，放到log中
-     * 
+     *
      * @param operLog 操作日志
      * @throws Exception 异常
      */
@@ -157,7 +157,6 @@ public class LogAspect
         String params = JSON.marshal(map);
         operLog.setOperParam(StringUtils.substring(params, 0, 2000));
     }
-
     /**
      * 是否存在注解，如果存在就获取
      */
@@ -166,7 +165,6 @@ public class LogAspect
         Signature signature = joinPoint.getSignature();
         MethodSignature methodSignature = (MethodSignature) signature;
         Method method = methodSignature.getMethod();
-
         if (method != null)
         {
             return method.getAnnotation(Log.class);
